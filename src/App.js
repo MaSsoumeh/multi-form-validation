@@ -1,25 +1,24 @@
-import { Formik } from 'formik';
-import { Button } from '@mui/material';
 import InputField from './components/InputField';
+import MultiStepForm, { FormStep } from './components/MultiStepForm';
 import * as yup from 'yup';
 import './App.css';
 
+const visaRegEx = /^(\+\d{1,3}[- ]?)?\d{11}$/;
 const validationSchema = yup.object({
   accidentLocation: yup.string().required('محل وقوع را مشخص کنید'),
-  email: yup
-    .string()
-    .email('آدرس ایمیل نامعتبر است')
-    .required('ایمیل را وارد کنید'),
+  visitingLocation: yup.string().required('محل بازدید را مشخص کنید'),
 });
 
 function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <Formik
+        <MultiStepForm
           initialValues={{
             accidentLocation: '',
-            email: '',
+            visitingLocation: '',
+            mobileNumber: '',
+            damagedName: '',
           }}
           onSubmit={(values) =>
             fetch(
@@ -33,23 +32,30 @@ function App() {
               }
             )
           }
-          validationSchema={validationSchema}
         >
-          {(formik) => (
-            <form onSubmit={formik.handleSubmit}>
-              <InputField label='محل وقوع حادثه*' name='accidentLocation' />
-              <InputField label='ایمیل*' name='email' />
-              <Button
-                style={{ marginTop: '20px' }}
-                fullWidth
-                type='submit'
-                variant='contained'
-              >
-                تایید
-              </Button>
-            </form>
-          )}
-        </Formik>
+          <FormStep
+            stepName='مشخصات عمومی حادثه'
+            validationSchema={validationSchema}
+            onSubmit={() => console.log('step1')}
+          >
+            <InputField label='محل وقوع حادثه*' name='accidentLocation' />
+            <InputField label='محل بازدید*' name='visitingLocation' />
+          </FormStep>
+          <FormStep
+            stepName='مشخصات زیان دیده'
+            validationSchema={yup.object({
+              mobileNumber: yup
+                .string()
+                .required(' تلفن خود را وارد کنید')
+                .matches(visaRegEx, 'تلفن همراه نامعتبر است'),
+              damagedName: yup.string().required(' نام مالک را وارد کنید'),
+            })}
+            onSubmit={() => console.log('step2')}
+          >
+            <InputField label='تلفن همراه*' name='mobileNumber' />
+            <InputField label='نام مالک / راننده*' name='damagedName' />
+          </FormStep>
+        </MultiStepForm>
       </header>
     </div>
   );
