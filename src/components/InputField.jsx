@@ -11,8 +11,8 @@ const InputField = ({ label, ...props }) => {
       label={label}
       {...field}
       {...props}
-      error={meta.touched}
-      helperText={meta.error}
+      error={meta.touched && Boolean(meta.error)}
+      helperText={meta.error && meta.error}
       variant='standard'
     />
   );
