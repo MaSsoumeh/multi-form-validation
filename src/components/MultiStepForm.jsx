@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import FormNavigation from './FormNavigation';
 
 const MultiStepForm = ({ children, initialValues, onSubmit }) => {
@@ -41,13 +41,13 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
         validationSchema={step.props.validationSchema}
       >
         {(formik) => (
-          <form onSubmit={formik.handleSubmit}>
+          <Form>
             <FormNavigation
               isLastStep={isLastStep}
               hasPrevious={currentStep > 0}
               onBackClick={previous(formik.values)}
             />
-          </form>
+          </Form>
         )}
       </Formik>
     </div>
