@@ -3,6 +3,14 @@ import { TextField, Button } from '@mui/material';
 import * as yup from 'yup';
 import './App.css';
 
+const validationSchema = yup.object({
+  accidentLocation: yup.string().required('محل وقوع را مشخص کنید'),
+  email: yup
+    .string()
+    .email('آدرس ایمیل نامعتبر است')
+    .required('ایمیل را وارد کنید'),
+});
+
 function App() {
   return (
     <div className='App'>
@@ -24,7 +32,7 @@ function App() {
               }
             )
           }
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
         >
           {(formik) => (
             <form onSubmit={formik.handleSubmit}>
