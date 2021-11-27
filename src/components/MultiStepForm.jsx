@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import FormNavigation from './FormNavigation';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 const MultiStepForm = ({ children, initialValues, onSubmit }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const steps = React.children.toArray(children);
+  const steps = React.Children.toArray(children);
   const [snapshot, setSnapshot] = useState(initialValues);
 
   const step = steps[currentStep];
@@ -22,7 +25,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
 
   const handleSubmit = async (values, actions) => {
     if (step.props.onSubmit) {
-      await step.props.onSubmit(values);
+      await step.props.onSubmit(values, actions);
     }
     if (isLastStep) {
       return onSubmit(values, actions);
@@ -34,7 +37,6 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
 
   return (
     <div>
-      {' '}
       <Formik
         initialValues={snapshot}
         onSubmit={handleSubmit}
@@ -42,10 +44,21 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
       >
         {(formik) => (
           <Form>
+            <Stepper activeStep={currentStep}>
+              {steps.map((step) => {
+                const label = step.props.stepName;
+                return (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            {step}
             <FormNavigation
               isLastStep={isLastStep}
               hasPrevious={currentStep > 0}
-              onBackClick={previous(formik.values)}
+              onBackClick={() => previous(formik.values)}
             />
           </Form>
         )}
