@@ -15,7 +15,7 @@ const FormNavigation = (props) => {
           بازگشت به صفحه قبل
         </Button>
       )}
-      <Button variant='contained' type={props.isLastStep ? 'submit' : 'button'}>
+      <Button variant='contained' type='submit'>
         {props.isLastStep ? 'ذخیره' : 'تایید و ادامه'}
       </Button>
     </div>
