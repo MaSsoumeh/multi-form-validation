@@ -44,7 +44,7 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
       >
         {(formik) => (
           <Form>
-            <Stepper activeStep={currentStep}>
+            <Stepper activeStep={currentStep} style={{ marginBottom: '20px' }}>
               {steps.map((step) => {
                 const label = step.props.stepName;
                 return (
@@ -68,5 +68,3 @@ const MultiStepForm = ({ children, initialValues, onSubmit }) => {
 };
 
 export default MultiStepForm;
-
-export const FormStep = ({ stepName = '', children }) => children;
