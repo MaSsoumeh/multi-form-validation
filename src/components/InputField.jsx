@@ -13,7 +13,7 @@ const InputField = ({ label, ...props }) => {
       {...props}
       error={meta.touched && Boolean(meta.error)}
       helperText={meta.error && meta.error}
-      variant='standard'
+      variant='outlined'
     />
   );
 };
